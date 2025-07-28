@@ -10,7 +10,7 @@ def test_complete_order(driver):
     login = LoginPage(driver)
     inventory = InventoryPage(driver)
     cart = CartPage(driver)
-    checkout = CheckoutPage(driver)
+    checkout = CheckoutPage(driver) 
 
     # Step 1: Login 
     login.load()
