@@ -12,7 +12,7 @@ def test_complete_order(driver):
     cart = CartPage(driver)
     checkout = CheckoutPage(driver)
 
-    # Step 1: Login
+    # Step 1: Login 
     login.load()
     login.login("standard_user", "secret_sauce")
 
