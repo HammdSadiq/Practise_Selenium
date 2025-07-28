@@ -1,0 +1,46 @@
+name: 🧪 Selenium Python Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v3
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: 🧰 Install Google Chrome & Chromedriver
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget unzip xvfb libxi6 libgconf-2-4
+        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo apt install -y ./google-chrome-stable_current_amd64.deb
+        sudo apt-get install -y chromium-chromedriver
+        sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
+
+    - name: 🧪 Run Pytest with Xvfb (headless display)
+      run: |
+        Xvfb :99 -ac &
+        export DISPLAY=:99
+        pytest tests/ --html=report.html
+
+    - name: 📤 Upload HTML Test Report (optional)
+      uses: actions/upload-artifact@v4
+      with:
+        name: pytest-report
+        path: report.html
